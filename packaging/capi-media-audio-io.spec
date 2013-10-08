@@ -37,6 +37,8 @@ make %{?jobs:-j%jobs}
 
 %install
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/license
+cp LICENSE.APLv2 %{buildroot}/usr/share/license/%{name}
 %make_install
 
 %post -p /sbin/ldconfig
@@ -52,5 +54,6 @@ rm -rf %{buildroot}
 %{_includedir}/media/audio_io.h
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/libcapi-media-audio-io.so
+/usr/share/license/%{name}
 
 
