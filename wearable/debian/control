@@ -1,0 +1,22 @@
+
+Source: capi-media-audio-io
+Section: libs
+Priority: extra
+Maintainer: Kangho Hur <kangho.hur@samsung.com>, Seungkeun Lee <sngn.lee@samsung.com>
+Build-Depends: debhelper (>= 5), dlog-dev, libmm-sound-dev, capi-base-common-dev, capi-media-sound-manager-dev
+
+Package: capi-media-audio-io
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: An Audio Input & Audio Output library in Tizen Native API
+
+Package: capi-media-audio-io-dev
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, capi-media-audio-io (= ${Source-Version}), capi-base-common-dev, capi-media-sound-manager-dev
+Description: An Audio Input & Audio Output library in Tizen Native API (DEV)
+
+Package: capi-media-audio-io-dbg
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, capi-media-audio-io (= ${Source-Version})
+Description: An Audio Input & Audio Output library in Tizen Native API (DBG)
+
