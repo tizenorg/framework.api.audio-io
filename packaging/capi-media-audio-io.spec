@@ -1,26 +1,20 @@
+#sbs-git:slp/api/audio-io capi-media-audio-io 0.1.0 da265a7364928d92084360809316e36f666f053f
 Name:       capi-media-audio-io
 Summary:    An Audio Input & Audio Output library in Tizen Native API
-%if 0%{?tizen_profile_mobile}
-Version: 0.2.0
+Version: 0.2.27
 Release:    0
-%else
-Version: 0.2.9
-Release:    0
-%endif
 Group:      TO_BE/FILLED_IN
-License:    Apache-2.0
+License:    TO BE FILLED IN
 Source0:    %{name}-%{version}.tar.gz
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
-%if "%{_repository}" == "wearable"
-BuildRequires:  pkgconfig(mm-pcmsound)
-%else
 BuildRequires:  pkgconfig(mm-sound)
-%endif
+BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(capi-media-sound-manager)
 BuildRequires:  pkgconfig(capi-base-common)
 Requires(post): /sbin/ldconfig  
 Requires(postun): /sbin/ldconfig
+Requires(post): libprivilege-control
 
 %description
 An Audio Input & Audio Output library in Tizen Native API
@@ -38,48 +32,27 @@ An Audio Input & Audio Output library in Tizen Native API (DEV)
 
 
 %build
-%if 0%{?tizen_profile_mobile}
-cd mobile
-%else
-cd wearable
-%endif
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
-%if 0%{?tizen_profile_wearable}
 cmake . -DCMAKE_INSTALL_PREFIX=/usr -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
-%else
-%cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
-%endif
+
 
 make %{?jobs:-j%jobs}
 
 %install
 rm -rf %{buildroot}
-%if 0%{?tizen_profile_mobile}
-cd mobile
-%else
-cd wearable
-%endif
-mkdir -p %{buildroot}/usr/share/license
-%if 0%{?tizen_profile_wearable}
-cp LICENSE %{buildroot}/usr/share/license/%{name}
-%else
-cp LICENSE.APLv2 %{buildroot}/usr/share/license/%{name}
-%endif
 %make_install
+mkdir -p %{buildroot}/usr/share/privilege-control
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
+/usr/bin/api_feature_loader --verbose --dir=/usr/share/privilege-control
 
 %postun -p /sbin/ldconfig
 
 
 %files
 %{_libdir}/libcapi-media-audio-io.so.*
-%{_datadir}/license/%{name}
-%if 0%{?tizen_profile_mobile}
-%manifest mobile/capi-media-audio-io.manifest
-%else
-%manifest wearable/capi-media-audio-io.manifest
-%endif
+%manifest capi-media-audio-io.manifest
 
 %files devel
 %{_includedir}/media/audio_io.h
