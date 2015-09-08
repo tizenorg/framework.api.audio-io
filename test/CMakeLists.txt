@@ -6,7 +6,7 @@ FOREACH(flag ${${fw_test}_CFLAGS})
     SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} ${flag}")
 ENDFOREACH(flag)
 
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS} -Wall -Werror")
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS} -Wall -Werror -pie")
 
 aux_source_directory(. sources)
 FOREACH(src ${sources})
@@ -16,3 +16,4 @@ FOREACH(src ${sources})
     TARGET_LINK_LIBRARIES(${src_name} ${fw_name} ${${fw_test}_LDFLAGS})
 ENDFOREACH()
 
+INSTALL(TARGETS audio_io_test DESTINATION bin)
