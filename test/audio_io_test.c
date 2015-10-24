@@ -384,6 +384,14 @@ int _convert_cmd_and_run(char cmd, int mode) {
             if(mode & 0x01)  ret = audio_out_unprepare(output);
             if(mode & 0x02)  ret = audio_in_unprepare(input);
             break;
+        case 'd':
+            if(mode & 0x01)  ret = audio_out_drain(output);
+            //if(mode & 0x02)  ret = audio_in_drain(input);
+            break;
+        case 'f':
+            if(mode & 0x01)  ret = audio_out_flush(output);
+            if(mode & 0x02)  ret = audio_in_flush(input);
+            break;
         case 'i':
 #ifdef _SESSION_SOUND_MANAGER_API_
             ret = sound_manager_set_session_type(SOUND_SESSION_TYPE_MEDIA);

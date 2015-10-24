@@ -107,6 +107,25 @@ int audio_in_unprepare(audio_in_h input)
 	return AUDIO_IO_ERROR_NONE;
 }
 
+int audio_in_flush(audio_in_h input)
+{
+	AUDIO_IO_NULL_ARG_CHECK(input);
+	audio_in_s *handle = (audio_in_s *) input;
+	int ret = MM_ERROR_NONE;
+
+	if (handle->is_async) {
+		ret = mm_sound_pcm_capture_flush_async(handle->mm_handle);
+	} else {
+		ret = mm_sound_pcm_capture_flush(handle->mm_handle);
+	}
+	if (ret != MM_ERROR_NONE) {
+		return __convert_audio_io_error_code(ret, (char*)__FUNCTION__);
+	}
+
+	LOGI("[%s] mm_sound_pcm_capture_flush() success",__FUNCTION__);
+	return AUDIO_IO_ERROR_NONE;
+}
+
 int audio_in_read(audio_in_h input, void *buffer, unsigned int length )
 {
 	AUDIO_IO_NULL_ARG_CHECK(input);
@@ -373,6 +392,46 @@ int audio_out_unprepare(audio_out_h output)
 	}
 
 	LOGI("[%s] mm_sound_pcm_play_stop() success",__FUNCTION__);
+	return AUDIO_IO_ERROR_NONE;
+}
+
+int audio_out_drain(audio_out_h output)
+{
+	AUDIO_IO_NULL_ARG_CHECK(output);
+	audio_out_s *handle = (audio_out_s *) output;
+	int ret = MM_ERROR_NONE;
+
+	if (handle->is_async) {
+		ret = mm_sound_pcm_play_drain_async(handle->mm_handle);
+	} else {
+		ret = mm_sound_pcm_play_drain(handle->mm_handle);
+	}
+
+	if (ret != MM_ERROR_NONE) {
+		return __convert_audio_io_error_code(ret, (char*)__FUNCTION__);
+	}
+
+	LOGI("[%s] mm_sound_pcm_play_drain() success",__FUNCTION__);
+	return AUDIO_IO_ERROR_NONE;
+}
+
+int audio_out_flush(audio_out_h output)
+{
+	AUDIO_IO_NULL_ARG_CHECK(output);
+	audio_out_s *handle = (audio_out_s *) output;
+	int ret = MM_ERROR_NONE;
+
+	if (handle->is_async) {
+		ret = mm_sound_pcm_play_flush_async(handle->mm_handle);
+	} else {
+		ret = mm_sound_pcm_play_flush(handle->mm_handle);
+	}
+
+	if (ret != MM_ERROR_NONE) {
+		return __convert_audio_io_error_code(ret, (char*)__FUNCTION__);
+	}
+
+	LOGI("[%s] mm_sound_pcm_play_flush() success",__FUNCTION__);
 	return AUDIO_IO_ERROR_NONE;
 }
 

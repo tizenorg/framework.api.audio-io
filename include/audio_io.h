@@ -264,6 +264,20 @@ int audio_in_prepare(audio_in_h input);
 int audio_in_unprepare(audio_in_h input);
 
 /**
+ * @brief Flushes and discards buffered audio data from the input stream.
+ *
+ * @since_tizen 2.4
+ *
+ * @param[in] input The handle to the audio input
+ * @return @c 0 on success,
+ *         otherwise a negative error value
+ * @retval #AUDIO_IO_ERROR_NONE Successful
+ * @retval #AUDIO_IO_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval #AUDIO_IO_ERROR_NOT_SUPPORTED Not supported
+ */
+int audio_in_flush(audio_in_h input);
+
+/**
  * @brief Reads audio data from the audio input buffer.
  *
  * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
@@ -588,6 +602,38 @@ int audio_out_prepare(audio_out_h output);
  * @see audio_out_prepare()
  */
 int audio_out_unprepare(audio_out_h output);
+
+/**
+ * @brief Drains buffered audio data from the output stream.
+ *
+ * @details This function waits until drains stream buffer completely. (e.g end of playback)
+ *
+ * @since_tizen 2.4
+ *
+ * @param[in] output The handle to the audio output
+ * @return @c 0 on success,
+ *         otherwise a negative error value
+ * @retval #AUDIO_IO_ERROR_NONE Successful
+ * @retval #AUDIO_IO_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see audio_out_flush()
+ */
+int audio_out_drain(audio_out_h output);
+
+/**
+ * @brief Flushes and discards buffered audio data from the output stream.
+ *
+ * @since_tizen 2.4
+ *
+ * @param[in] output The handle to the audio output
+ * @return @c 0 on success,
+ *         otherwise a negative error value
+ * @retval #AUDIO_IO_ERROR_NONE Successful
+ * @retval #AUDIO_IO_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see audio_out_drain()
+ */
+int audio_out_flush(audio_out_h output);
 
 /**
  * @brief Starts writing the audio data to the device.

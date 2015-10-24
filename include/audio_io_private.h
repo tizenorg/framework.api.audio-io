@@ -25,9 +25,6 @@
  * Internal Macros
  */
 
-#define AUDIO_IO_INTERRUPTED_BY_RESUMABLE_MEDIA       (AUDIO_IO_INTERRUPTED_BY_NOTIFICATION + 1)
-#define AUDIO_IO_INTERRUPTED_BY_RESUMABLE_CANCELED    (AUDIO_IO_INTERRUPTED_BY_NOTIFICATION + 2)
-
 #define AUDIO_IO_CHECK_CONDITION(condition,error,msg)   \
                 if(condition) {} else \
                 { LOGE("[%s] %s(0x%08x)",__FUNCTION__, msg,error); return error;}; \
