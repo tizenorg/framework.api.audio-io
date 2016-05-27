@@ -47,8 +47,8 @@
  * The input and output devices both have an available set of queries, to find the suggested buffer size, sampling rate, channel type,
  * and sample type. For output, there is an additional query, to get the sound type (these types are defined in the @ref CAPI_MEDIA_SOUND_MANAGER_MODULE API).
  *
- * Reading and writing is done by allocating a buffer and passing the buffer to the input device
- * via audio_in_start_recording(), audio_in_read(), or writing to the buffer and passing it to the output device via audio_out_write().
+ * Reading from input device is done by audio_in_read() with allocated buffer after audio_in_prepare().
+ * Similarly, writing to output device is done by audio_out_write() with allocated buffer after audio_out_prepare().
  *
  */
 

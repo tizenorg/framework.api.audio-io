@@ -292,7 +292,7 @@ int audio_in_flush(audio_in_h input);
  * @retval #AUDIO_IO_ERROR_SOUND_POLICY Sound policy error
  * @retval #AUDIO_IO_ERROR_INVALID_OPERATION Invalid operation
  * @retval #AUDIO_IO_ERROR_NOT_SUPPORTED Not supported
- * @pre audio_in_start_recording().
+ * @pre audio_in_prepare()
  */
 int audio_in_read(audio_in_h input, void *buffer, unsigned int length);
 

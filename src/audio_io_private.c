@@ -28,6 +28,11 @@
 #endif
 #define LOG_TAG "TIZEN_N_AUDIO_IO"
 
+#include <system_info.h>
+
+#define FEATURE_MICROPHONE          "http://tizen.org/feature/microphone"
+
+
 /*
  * Internal Implementation
  */
@@ -72,6 +77,10 @@ int __convert_audio_io_error_code(int code, char *func_name)
 		case MM_ERROR_POLICY_DUPLICATED:
 			ret = AUDIO_IO_ERROR_SOUND_POLICY;
 			msg = "AUDIO_IO_ERROR_SOUND_POLICY";
+			break;
+		case MM_ERROR_NOT_SUPPORT_API:
+			ret = AUDIO_IO_ERROR_NOT_SUPPORTED;
+			msg = "AUDIO_IO_ERROR_NOT_SUPPORTED";
 			break;
 	}
 	if(ret != AUDIO_IO_ERROR_NONE) {
@@ -251,11 +260,18 @@ int audio_in_create_private(int sample_rate, audio_channel_e channel, audio_samp
 {
 	int ret = 0;
 	audio_in_s *handle = NULL;
+	bool mic_enable = false;
 
 	/* input condition check */
 	AUDIO_IO_NULL_ARG_CHECK(input);
-	if(__check_parameter(sample_rate, channel, type) != AUDIO_IO_ERROR_NONE)
+	if (__check_parameter(sample_rate, channel, type) != AUDIO_IO_ERROR_NONE)
 		return AUDIO_IO_ERROR_INVALID_PARAMETER;
+
+	/* MIC is not enabled, return false */
+	ret = system_info_get_platform_bool(FEATURE_MICROPHONE, &mic_enable);
+	LOGI("system_info_platform [%s]=[%d], ret[%d]", FEATURE_MICROPHONE, mic_enable, ret);
+	if (ret != SYSTEM_INFO_ERROR_NONE || !mic_enable)
+		return __convert_audio_io_error_code(MM_ERROR_NOT_SUPPORT_API, (char*)__FUNCTION__);
 
 	/* Create Handle & Fill information */
 	if ((handle = (audio_in_s*)malloc( sizeof(audio_in_s))) == NULL) {
